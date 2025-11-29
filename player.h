@@ -3,17 +3,18 @@
 #include "raylib.h"
 #include "timer.h"
 #include "bullet.h"
+#include "enemy.h"
 
 namespace player
 {
 	constexpr int maxBullets = 10;
+	constexpr int maxEnemies = 30;
 
 	class Player
 	{
 	private:
 		float position;
 		float velocity;
-		float acceleration;
 
 		int speed;
 		char accelerationSpeed;
@@ -21,11 +22,14 @@ namespace player
 		float rotation;
 
 		bool canShoot;
-		Timer shootCooldown;
+		timer::Timer shootCooldown;
+		bullet::Bullet bullets[maxBullets];
 		void Shoot();
 
-		bullet::Bullet bullets[maxBullets];
-
+		bool canSpawn;
+		timer::Timer spawnCooldown;
+		enemy::Enemy enemies[maxEnemies];
+		void Spawn();
 	public:
 		Player(float position);
 

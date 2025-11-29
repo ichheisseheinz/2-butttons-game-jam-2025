@@ -2,11 +2,22 @@
 
 #include "raylib.h"
 
-struct Timer
+namespace timer
 {
-	double startTime{ 0 };
-	float totalTime{ 0 };
+	struct Timer
+	{
+		double startTime{ 0 };
+		float totalTime{ 0 };
 
-	void Start(float total);
-	bool IsActiveTimer();
-};
+		void Start(float total);
+		bool IsActiveTimer();
+	};
+
+	struct Stopwatch
+	{
+		double startTime{ 0 };
+
+		void Start();
+		float GetElapsedTime();
+	};
+}

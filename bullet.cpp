@@ -2,7 +2,8 @@
 
 using namespace bullet;
 
-Bullet::Bullet() : Bullet(Vector2{0, 0}, 0)
+Bullet::Bullet()
+	: Bullet(Vector2{0, 0}, 0)
 {
 	this->speed = 0;
 	this->velocity = Vector2{ 0, 0 };
@@ -10,13 +11,7 @@ Bullet::Bullet() : Bullet(Vector2{0, 0}, 0)
 }
 
 Bullet::Bullet(Vector2 position, float rotation)
-{
-	this->position = position;
-	this->rotation = rotation;
-	this->speed = 400;
-	this->velocity = Vector2Rotate(Vector2{ 1, 0 }, rotation * DEG2RAD);
-	this->active = true;
-}
+	: position(position), rotation(rotation), speed(400), velocity(Vector2Rotate(Vector2{ 1, 0 }, rotation * DEG2RAD)), active(true) { }
 
 void Bullet::Update(float dt)
 {

@@ -1,20 +1,9 @@
 #include "player.h"
 
 using namespace player;
-using namespace bullet;
 
 Player::Player(float position)
-{
-	this->position = position;
-	this->velocity = 0;
-
-	this->speed = 50;
-	this->accelerationSpeed = 15;
-
-	this->rotation = -90; // Facing up
-
-	this->canShoot = true;
-}
+	: position(position), velocity(0), speed(50), accelerationSpeed(15), rotation(-90), canShoot(true) { }
 
 bool player::GetRightDown()
 {
@@ -30,7 +19,7 @@ void Player::Update(float dt)
 {
 	// Change velocity
 	this->velocity += (int)(GetRightDown() - GetLeftDown()) * accelerationSpeed * dt;
-	this->velocity *= 0.95f; // Friction/dampening
+	this->velocity *= 0.95f; // Dampening
 
 	// Clamp velocity to max
 	if (this->velocity > speed)
@@ -66,8 +55,11 @@ void Player::Update(float dt)
 		Shoot();
 	}
 
+	// Spawn enemies
+	if (this->canSpawn) Spawn();
+
 	// Update bullets
-	for (int i = maxBullets - 1; i >= 0; --i)
+	for (int i = 0; i < maxBullets; i++)
 	{
 		if (this->bullets[i].active)
 		{
@@ -75,8 +67,18 @@ void Player::Update(float dt)
 		}
 	}
 
+	// Update enemies
+	for (int i = 0; i < maxEnemies; i++)
+	{
+		if (this->enemies[i].active)
+		{
+			this->enemies[i].Update(dt);
+		}
+	}
+
 	// Update timers
 	this->canShoot = !this->shootCooldown.IsActiveTimer();
+	this->canSpawn = !this->spawnCooldown.IsActiveTimer();
 }
 
 void Player::Shoot()
@@ -87,10 +89,26 @@ void Player::Shoot()
 		{
 			if (this->bullets[i].active) continue;
 
-			bullets[i] = Bullet::Bullet(Vector2{ this->position, (float)GetScreenHeight() - 100 }, this->rotation);
+			bullets[i] = bullet::Bullet::Bullet(Vector2{ this->position, (float)GetScreenHeight() - 100 }, this->rotation);
+			this->shootCooldown.Start(0.2f);
 			break;
 		}
-		this->shootCooldown.Start(0.2f);
+	}
+}
+
+void Player::Spawn()
+{
+	if (this->canSpawn)
+	{
+		for (int i = 0; i < maxEnemies; i++)
+		{
+			if (this->enemies[i].active) continue;
+
+			enemies[i] = enemy::Enemy::Enemy(Vector2{ (float)GetRandomValue(20, 480), (float)GetRandomValue(50, 300) }, 100);
+			this->spawnCooldown.Start(0.2f);
+			break;
+		}
+
 	}
 }
 
@@ -104,6 +122,15 @@ void Player::Draw()
 		if (this->bullets[i].active)
 		{
 			this->bullets[i].Draw();
+		}
+	}
+
+	// Draw Enemies
+	for (int i = 0; i < maxEnemies; i++)
+	{
+		if (this->enemies[i].active)
+		{
+			this->enemies[i].Draw();
 		}
 	}
 }
