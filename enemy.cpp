@@ -3,15 +3,19 @@
 
 using namespace enemy;
 
-Enemy::Enemy() : Enemy(Vector2{ 0,0 }, 0) {
-	this->speed = 0;
-	this->entering = false;
-
-	this->active = false;
+Enemy::Enemy()
+	: position({ 0, -20 }),
+	  finalPosition({ 0, 0 }),
+	  rotation(90),
+	  speed(0),
+	  size(0),
+	  entering(false),
+	  active(false)
+{
 }
 
 Enemy::Enemy(Vector2 position, float speed)
-	: position(Vector2{position.x, -20}), finalPosition(position), rotation(90), speed(speed), entering(true), active(true) { }
+	: position(Vector2{position.x, -20}), finalPosition(position), rotation(90), speed(speed), size(10), entering(true), active(true) { }
 
 void Enemy::Update(float dt)
 {
@@ -33,5 +37,15 @@ void Enemy::Update(float dt)
 
 void Enemy::Draw()
 {
-	DrawPolyLines(this->position, 3, 10, this->rotation, RED);
+	DrawPolyLines(this->position, 3, this->size, this->rotation, RED);
+}
+
+Vector2 Enemy::GetPosition()
+{
+	return this->position;
+}
+
+int Enemy::GetSize()
+{
+	return this->size;
 }

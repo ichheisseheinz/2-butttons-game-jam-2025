@@ -3,7 +3,7 @@
 using namespace player;
 
 Player::Player(float position)
-	: position(position), velocity(0), speed(50), accelerationSpeed(15), rotation(-90), canShoot(true) { }
+	: position(position), velocity(0), speed(50), accelerationSpeed(15), rotation(-90), canShoot(true), canSpawn(true) { }
 
 bool player::GetRightDown()
 {
@@ -50,45 +50,41 @@ void Player::Update(float dt)
 	this->rotation = this->velocity - 90;
 
 	// Check for shooting
-	if (GetRightDown() && GetLeftDown())
-	{
-		Shoot();
-	}
+	if (GetRightDown() && GetLeftDown() && !this->shootCooldown.IsActiveTimer()) Shoot();
 
 	// Spawn enemies
-	if (this->canSpawn) Spawn();
+	if (!this->spawnCooldown.IsActiveTimer()) Spawn();
 
 	// Update bullets
 	for (int i = 0; i < maxBullets; i++)
 	{
 		if (this->bullets[i].active)
 		{
-			this->bullets[i].Update(dt);
+			if (this->bullets[i].Update(dt, this->enemies, currentEnemies)) currentEnemies++;
 		}
 	}
 
 	// Update enemies
-	for (int i = 0; i < maxEnemies; i++)
+	if (maxEnemies < currentEnemies)
+	{
+		currentEnemies = maxEnemies;
+	}
+
+	for (int i = 0; i < currentEnemies; i++)
 	{
 		if (this->enemies[i].active)
 		{
 			this->enemies[i].Update(dt);
 		}
 	}
-
-	// Update timers
-	this->canShoot = !this->shootCooldown.IsActiveTimer();
-	this->canSpawn = !this->spawnCooldown.IsActiveTimer();
 }
 
 void Player::Shoot()
 {
-	if (this->canShoot)
+	for (int i = 0; i < maxBullets; i++)
 	{
-		for (int i = 0; i < maxBullets; i++)
+		if (!this->bullets[i].active)
 		{
-			if (this->bullets[i].active) continue;
-
 			bullets[i] = bullet::Bullet::Bullet(Vector2{ this->position, (float)GetScreenHeight() - 100 }, this->rotation);
 			this->shootCooldown.Start(0.2f);
 			break;
@@ -98,17 +94,14 @@ void Player::Shoot()
 
 void Player::Spawn()
 {
-	if (this->canSpawn)
+	for (int i = 0; i < maxEnemies; i++)
 	{
-		for (int i = 0; i < maxEnemies; i++)
+		if (!this->enemies[i].active)
 		{
-			if (this->enemies[i].active) continue;
-
 			enemies[i] = enemy::Enemy::Enemy(Vector2{ (float)GetRandomValue(20, 480), (float)GetRandomValue(50, 300) }, 100);
 			this->spawnCooldown.Start(0.2f);
 			break;
 		}
-
 	}
 }
 

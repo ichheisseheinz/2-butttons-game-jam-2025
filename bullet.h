@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
+#include "enemy.h"
 
 namespace bullet
 {
@@ -12,14 +13,13 @@ namespace bullet
 		float rotation;
 		int speed;
 		Vector2 velocity;
-
 	public:
 		Bullet();
 		Bullet(Vector2 position, float rotation);
 
 		bool active;
 
-		void Update(float dt);
+		bool Update(float dt, enemy::Enemy enemies[], int numEnemies);
 		void Draw();
 	};
 }

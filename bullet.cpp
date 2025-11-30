@@ -1,8 +1,7 @@
 #include "bullet.h"
+#include <iterator>
 
-using namespace bullet;
-
-Bullet::Bullet()
+bullet::Bullet::Bullet()
 	: Bullet(Vector2{0, 0}, 0)
 {
 	this->speed = 0;
@@ -10,21 +9,37 @@ Bullet::Bullet()
 	this->active = false;
 }
 
-Bullet::Bullet(Vector2 position, float rotation)
+bullet::Bullet::Bullet(Vector2 position, float rotation)
 	: position(position), rotation(rotation), speed(400), velocity(Vector2Rotate(Vector2{ 1, 0 }, rotation * DEG2RAD)), active(true) { }
 
-void Bullet::Update(float dt)
+bool bullet::Bullet::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 {
 	velocity = Vector2Scale(Vector2Normalize(velocity), speed * dt);
 	position = Vector2Add(position, velocity);
 
-	if (position.y < -10 || position.x < -10 || position.x > GetScreenWidth() + 10)
+	if (position.y < -10 || position.y > GetScreenHeight() + 10 || position.x < -10 || position.x > GetScreenWidth() + 10)
 	{
 		this->active = false;
 	}
+
+	for (int i = 0; i < numEnemies; i++)
+	{
+		enemy::Enemy& e = enemies[i];
+		if (e.active) // Separate to prevent unnessecarry calculation (I am professional programmer)
+		{
+			if (CheckCollisionCircles(this->position, 3, e.GetPosition(), (float)e.GetSize()))
+			{
+				this->active = false;
+				e.active = false;
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
-void Bullet::Draw()
+void bullet::Bullet::Draw()
 {
 	DrawCircleV(this->position, 3, WHITE);
 }

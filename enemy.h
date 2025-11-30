@@ -12,9 +12,9 @@ namespace enemy
 		Vector2 finalPosition;
 		float rotation;
 		float speed;
+		int size;
 
 		bool entering;
-
 		timer::Stopwatch timeSinceEntered;
 	public:
 		Enemy();
@@ -24,5 +24,8 @@ namespace enemy
 
 		void Update(float dt);
 		void Draw();
+
+		Vector2 GetPosition();
+		int GetSize();
 	};
 }

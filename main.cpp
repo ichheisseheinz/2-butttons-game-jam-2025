@@ -1,3 +1,8 @@
+/*
+I'm sorry in advance
+Don't dig deeper into the code I beg of you
+*/
+
 #include "raylib.h"
 
 #include "player.h"

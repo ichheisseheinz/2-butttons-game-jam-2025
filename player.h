@@ -7,8 +7,9 @@
 
 namespace player
 {
-	constexpr int maxBullets = 10;
+	constexpr int maxBullets = 50;
 	constexpr int maxEnemies = 30;
+	static int currentEnemies = 10;
 
 	class Player
 	{
