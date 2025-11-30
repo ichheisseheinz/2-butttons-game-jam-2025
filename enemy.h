@@ -9,13 +9,12 @@ namespace enemy
 	{
 	private:
 		Vector2 position;
-		Vector2 finalPosition;
+		float horizontalCenter;
 		float rotation;
 		float speed;
 		int size;
 
-		bool entering;
-		timer::Stopwatch timeSinceEntered;
+		timer::Stopwatch timeSinceActive;
 	public:
 		Enemy();
 		Enemy(Vector2 position, float speed);
