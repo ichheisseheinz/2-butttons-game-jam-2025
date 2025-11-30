@@ -5,27 +5,24 @@ Don't dig deeper into the code I beg of you
 
 #include "raylib.h"
 
-#include "player.h"
+#include "game.h"
 
 int main()
 {
-	const int screenWidth = 500;
-	const int screenHeight = 800;
-
-	InitWindow(screenWidth, screenHeight, "2 Buttons Game Jam");
+	InitWindow(game::screenWidth, game::screenHeight, "2 Buttons Game Jam");
 	SetTargetFPS(60);
 
-	player::Player player(screenWidth / 2);
+	game::Game game;
 
 	while (!WindowShouldClose())
 	{
 		float dt = GetFrameTime();
-		player.Update(dt);
+		game.Update(dt);
 
 		BeginDrawing();
 
 		ClearBackground(BLACK);
-		player.Draw();
+		game.Draw();
 
 		DrawFPS(0, 0);
 

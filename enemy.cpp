@@ -16,6 +16,8 @@ void Enemy::Update(float dt)
 {
 	this->position.y += this->speed * dt;
 	this->position.x = this->horizontalCenter + sinf(this->timeSinceActive.GetElapsedTime() * 2) * 10;
+
+	if (this->position.y > GetScreenHeight() + 20) this->position.y = -20; // Reset vertical position for looping
 }
 
 void Enemy::Draw()
