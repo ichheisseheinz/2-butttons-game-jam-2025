@@ -3,8 +3,6 @@ I'm sorry in advance
 Don't dig deeper into the code I beg of you
 */
 
-#include "raylib.h"
-
 #include "game.h"
 
 int main()
@@ -24,7 +22,7 @@ int main()
 		ClearBackground(BLACK);
 		game.Draw();
 
-		DrawFPS(0, 0);
+		DrawFPS(10, 35);
 
 		EndDrawing();
 	}

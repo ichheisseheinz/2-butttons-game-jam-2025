@@ -11,13 +11,13 @@ namespace enemy
 		Vector2 position;
 		float horizontalCenter;
 		float rotation;
-		float speed;
+		int speed;
 		int size;
 
 		timer::Stopwatch timeSinceActive;
 	public:
 		Enemy();
-		Enemy(Vector2 position, float speed);
+		Enemy(Vector2 position, float rotation, int speed);
 
 		bool active;
 

@@ -2,15 +2,14 @@
 #include <iterator>
 
 bullet::Bullet::Bullet()
-	: Bullet(Vector2{0, 0}, 0)
+	: Bullet(Vector2{0, 0}, 0, 0)
 {
-	this->speed = 0;
 	this->velocity = Vector2{ 0, 0 };
 	this->active = false;
 }
 
-bullet::Bullet::Bullet(Vector2 position, float rotation)
-	: position(position), rotation(rotation), speed(400), velocity(Vector2Rotate(Vector2{ 1, 0 }, rotation * DEG2RAD)), active(true) { }
+bullet::Bullet::Bullet(Vector2 position, float rotation, int speed)
+	: position(position), rotation(rotation), speed(speed), velocity(Vector2Rotate(Vector2{ 1, 0 }, rotation * DEG2RAD)), active(true) { }
 
 bool bullet::Bullet::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 {

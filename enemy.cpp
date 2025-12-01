@@ -6,8 +6,8 @@ using namespace enemy;
 Enemy::Enemy()
 	: position(Vector2{ 0, -20 }), horizontalCenter(0), rotation(90), speed(0), size(0), active(false) { }
 
-Enemy::Enemy(Vector2 position, float speed)
-	: position(Vector2{ position.x, -20 }), horizontalCenter(position.x), rotation(90), speed(speed), size(10), active(true)
+Enemy::Enemy(Vector2 position, float rotation, int speed)
+	: position(Vector2{ position.x, -20 }), horizontalCenter(position.x), rotation(rotation), speed(speed), size(10), active(true)
 {
 	this->timeSinceActive.Start();
 }

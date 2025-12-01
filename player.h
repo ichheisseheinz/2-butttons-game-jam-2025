@@ -1,30 +1,33 @@
 #pragma once
 
 #include "raylib.h"
+#include "enemy.h"
+#include "util.h"
 
 namespace player
 {
-	constexpr int maxBullets = 50;
-	constexpr int maxEnemies = 30;
-	static int currentEnemies = 10;
-
 	class Player
 	{
 	private:
-		float position;
+		Vector2 position;
 		float velocity;
 
 		int speed;
 		char accelerationSpeed;
 
 		float rotation;
-	public:
-		Player(float position);
 
-		void Update(float dt);
+		int health;
+		timer::Timer damageCooldown;
+		bool IsTakingDamage(enemy::Enemy enemies[], int numEnemies);
+	public:
+		Player(Vector2 position, float rotation, int speed);
+
+		void Update(float dt, enemy::Enemy enemies[], int numEnemies);
 		void Draw();
 
-		float GetPosition();
+		float GetXPosition();
 		float GetRotation();
+		int GetHealth();
 	};
 }

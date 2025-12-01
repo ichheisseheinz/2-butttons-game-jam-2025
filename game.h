@@ -1,12 +1,7 @@
 #pragma once
 
-#include "raylib.h"
-
 #include "player.h"
-#include "enemy.h"
 #include "bullet.h"
-#include "timer.h"
-#include "util.h"
 
 namespace game
 {

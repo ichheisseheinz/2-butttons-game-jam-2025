@@ -15,7 +15,7 @@ namespace bullet
 		Vector2 velocity;
 	public:
 		Bullet();
-		Bullet(Vector2 position, float rotation);
+		Bullet(Vector2 position, float rotation, int speed);
 
 		bool active;
 
