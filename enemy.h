@@ -1,7 +1,7 @@
 #pragma once
 
 #include "raylib.h"
-#include "timer.h"
+#include "util.h"
 
 namespace enemy
 {
@@ -14,7 +14,7 @@ namespace enemy
 		int speed;
 		int size;
 
-		timer::Stopwatch timeSinceActive;
+		util::Stopwatch timeSinceActive;
 	public:
 		Enemy();
 		Enemy(Vector2 position, float rotation, int speed);

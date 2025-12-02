@@ -3,7 +3,7 @@
 using namespace player;
 
 Player::Player(Vector2 position, float rotation, int speed)
-	: position(position), velocity(0), speed(speed), accelerationSpeed(15), rotation(rotation), health(1) { }
+	: position(position), velocity(0), speed(speed), accelerationSpeed(15), rotation(rotation), health(2) { }
 
 void Player::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 {
@@ -56,7 +56,7 @@ bool Player::IsTakingDamage(enemy::Enemy enemies[], int numEnemies)
 		enemy::Enemy& e = enemies[i];
 		if (e.active)
 		{
-			if (CheckCollisionCircles(this->position, 15, e.GetPosition(), (float)e.GetSize()))
+			if (CheckCollisionCircles(this->position, 15, e.GetPosition(), (float)e.GetSize() - 5))
 			{
 				this->damageCooldown.Start(1.5f);
 				return true;

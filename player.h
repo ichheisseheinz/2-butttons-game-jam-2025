@@ -2,7 +2,6 @@
 
 #include "raylib.h"
 #include "enemy.h"
-#include "util.h"
 
 namespace player
 {
@@ -18,7 +17,7 @@ namespace player
 		float rotation;
 
 		int health;
-		timer::Timer damageCooldown;
+		util::Timer damageCooldown;
 		bool IsTakingDamage(enemy::Enemy enemies[], int numEnemies);
 	public:
 		Player(Vector2 position, float rotation, int speed);

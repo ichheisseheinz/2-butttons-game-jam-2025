@@ -17,11 +17,11 @@ namespace game
 	private:
 		player::Player player;
 
-		timer::Timer shootCooldown;
+		util::Timer shootCooldown;
 		bullet::Bullet bullets[maxBullets];
 		void Shoot();
 
-		timer::Timer spawnCooldown;
+		util::Timer spawnCooldown;
 		enemy::Enemy enemies[maxEnemies];
 		void Spawn();
 	public:

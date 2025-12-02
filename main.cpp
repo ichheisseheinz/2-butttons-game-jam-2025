@@ -10,6 +10,11 @@ int main()
 	InitWindow(game::screenWidth, game::screenHeight, "2 Buttons Game Jam");
 	SetTargetFPS(60);
 
+	// Get window icon
+	Image icon = LoadImage("assets/icon.png");
+	SetWindowIcon(icon);
+	UnloadImage(icon);
+
 	game::Game game;
 
 	while (!WindowShouldClose())
