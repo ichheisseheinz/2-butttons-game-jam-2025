@@ -44,6 +44,7 @@ void Player::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 	{
 		if (IsTakingDamage(enemies, numEnemies))
 		{
+			sounds::Play("assets/hit.ogg");
 			health--;
 		}
 	}

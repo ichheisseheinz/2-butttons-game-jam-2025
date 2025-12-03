@@ -1,7 +1,7 @@
 #pragma once
 
-#include "player.h"
-#include "bullet.h"
+#include "entity/player.h"
+#include "entity/bullet.h"
 
 namespace game
 {

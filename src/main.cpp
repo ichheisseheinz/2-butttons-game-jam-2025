@@ -8,6 +8,7 @@ Don't dig deeper into the code I beg of you
 int main()
 {
 	InitWindow(game::screenWidth, game::screenHeight, "2 Buttons Game Jam");
+	InitAudioDevice();
 	SetTargetFPS(60);
 
 	// Get window icon
@@ -32,6 +33,9 @@ int main()
 		EndDrawing();
 	}
 
+	sounds::UnloadSounds();
+
+	CloseAudioDevice();
 	CloseWindow();
 
 	return 0;

@@ -30,6 +30,7 @@ bool bullet::Bullet::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 			{
 				this->active = false;
 				e.active = false;
+				sounds::Play("assets/explosion.ogg");
 				return true;
 			}
 		}

@@ -46,6 +46,7 @@ void Game::Shoot()
 		{
 			bullets[i] = bullet::Bullet::Bullet(Vector2{ this->player.GetXPosition(), (float)GetScreenHeight() - 100}, this->player.GetRotation(), 400);
 			this->shootCooldown.Start(0.2f);
+			sounds::Play("assets/shoot.ogg");
 			break;
 		}
 	}

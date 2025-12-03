@@ -1,7 +1,8 @@
 #pragma once
 
 #include "raylib.h"
-#include "util.h"
+#include "../util.h"
+#include "../file/sounds.h"
 
 namespace enemy
 {
