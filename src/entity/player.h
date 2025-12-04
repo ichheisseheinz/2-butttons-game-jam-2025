@@ -19,6 +19,8 @@ namespace player
 		int health;
 		util::Timer damageCooldown;
 		bool IsTakingDamage(enemy::Enemy enemies[], int numEnemies);
+
+		Texture tex;
 	public:
 		Player(Vector2 position, float rotation, int speed);
 

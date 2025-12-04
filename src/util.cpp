@@ -12,6 +12,16 @@ bool util::GetLeftDown()
 	return IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
 }
 
+bool util::GetRightPressed()
+{
+	return IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D);
+}
+
+bool util::GetLeftPressed()
+{
+	return IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A);
+}
+
 void Timer::Start(float total)
 {
 	startTime = GetTime();

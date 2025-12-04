@@ -3,38 +3,86 @@
 using namespace game;
 
 Game::Game()
-	: player(Vector2{ screenWidth / 2, (float)screenHeight - 100}, -90, 50) { }
+	: player(Vector2{ screenWidth / 2, (float)screenHeight - 100}, -90, 50), gameState(MENU) { }
 
 void Game::Update(float dt)
 {
-	// Update player
-	this->player.Update(dt, this->enemies, currentEnemies);
-
-	// Spawn and update enemies
-	if (!this->spawnCooldown.IsActiveTimer()) Spawn();
-
-	if (maxEnemies < currentEnemies) // limit max enemies to prevent errors
+	switch (this->gameState)
 	{
-		currentEnemies = maxEnemies;
-	}
-
-	for (int i = 0; i < currentEnemies; i++)
-	{
-		if (this->enemies[i].active)
+	case MENU:
+		if (util::GetRightPressed())
 		{
-			this->enemies[i].Update(dt);
+			this->currentButton++;
 		}
-	}
+		this->currentButton %= 3;
 
-	// Spawn and update bullets
-	if (util::GetRightDown() && util::GetLeftDown() && !this->shootCooldown.IsActiveTimer()) Shoot();
-
-	for (int i = 0; i < maxBullets; i++)
-	{
-		if (this->bullets[i].active)
+		if (util::GetLeftPressed())
 		{
-			if (this->bullets[i].Update(dt, this->enemies, currentEnemies)) currentEnemies++;
+			switch (this->currentButton)
+			{
+			case 0:
+				this->gameState = GAME;
+				break;
+			case 1:
+				this->gameState = CONTROLS;
+				break;
+			case 2:
+				this->shouldClose = true;
+				break;
+			}
 		}
+
+		break;
+	case CONTROLS:
+		if (util::GetRightPressed() || util::GetLeftPressed())
+		{
+			this->gameState = MENU;
+		}
+
+		break;
+	case GAME:
+		if (this->player.GetHealth() > 0)
+		{
+			// Update player
+			this->player.Update(dt, this->enemies, currentEnemies);
+
+			// Spawn and update enemies
+			if (!this->spawnCooldown.IsActiveTimer()) Spawn();
+
+			if (maxEnemies < currentEnemies) // limit max enemies to prevent errors
+			{
+				currentEnemies = maxEnemies;
+			}
+
+			for (int i = 0; i < currentEnemies; i++)
+			{
+				if (this->enemies[i].active)
+				{
+					this->enemies[i].Update(dt);
+				}
+			}
+
+			// Spawn and update bullets
+			if (util::GetRightDown() && util::GetLeftDown() && !this->shootCooldown.IsActiveTimer()) Shoot();
+
+			for (int i = 0; i < maxBullets; i++)
+			{
+				if (this->bullets[i].active)
+				{
+					if (this->bullets[i].Update(dt, this->enemies, currentEnemies)) currentEnemies++;
+				}
+			}
+		}
+		else this->gameState = GAME_OVER;
+
+		break;
+	case GAME_OVER:
+		if (util::GetRightPressed() || util::GetLeftPressed())
+		{
+			this->gameState = MENU;
+		}
+
+		break;
 	}
 }
 
@@ -46,7 +94,7 @@ void Game::Shoot()
 		{
 			bullets[i] = bullet::Bullet::Bullet(Vector2{ this->player.GetXPosition(), (float)GetScreenHeight() - 100}, this->player.GetRotation(), 400);
 			this->shootCooldown.Start(0.2f);
-			sounds::Play("assets/shoot.ogg");
+			file::Play("assets/shoot.ogg");
 			break;
 		}
 	}
@@ -67,8 +115,56 @@ void Game::Spawn()
 
 void Game::Draw()
 {
-	if (this->player.GetHealth() > 0) // Play state
+	const char* text;
+
+	switch (this->gameState)
 	{
+	case MENU:
+		text = "Untitled Stride Game";
+		DrawText(text, screenWidth / 2 - MeasureText(text, 40) / 2, 100, 40, RAYWHITE);
+
+		// Menu buttons
+		text = "Play";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 300, defaultFontSize, RAYWHITE);
+
+		text = "Controls";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 400, defaultFontSize, RAYWHITE);
+
+		text = "Exit";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 500, defaultFontSize, RAYWHITE);
+
+		// To mark current selection
+		text = "*";
+		DrawText(text, 150, this->currentButton * 100 + 300, defaultFontSize, RAYWHITE);
+
+		text = "Use right key to change options and left to select";
+		DrawText(text, screenWidth / 2 - MeasureText(text, 16) / 2, 710, 16, GRAY);
+
+		text = "All sound effects from kenney.nl (tsym!!!)";
+		DrawText(text, screenWidth / 2 - MeasureText(text, 16) / 2, 740, 16, GRAY);
+
+		text = "Created by IchHeisseHeinz for 2 Buttons Game Jam 2025";
+		DrawText(text, screenWidth / 2 - MeasureText(text, 16) / 2, 770, 16, GRAY);
+
+		break;
+	case CONTROLS:
+		text = "Right = Right Arrow / D";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 200, defaultFontSize, RAYWHITE);
+
+		text = "Left = Left Arrow / A";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 250, defaultFontSize, RAYWHITE);
+
+		text = "Use left and right to move";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 400, defaultFontSize, RAYWHITE);
+
+		text = "Press both at once to shoot";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 450, defaultFontSize, RAYWHITE);
+
+		text = "Press left or right to return to the menu";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 650, defaultFontSize, RAYWHITE);
+
+		break;
+	case GAME:
 		this->player.Draw();
 
 		// Draw Enemies
@@ -91,11 +187,15 @@ void Game::Draw()
 
 		// Draw player health
 		DrawText(TextFormat("Health: %d", this->player.GetHealth()), 10, 10, 20, RAYWHITE);
-	}
-	else // Game over state
-	{
-		const char* text = "GAME OVER";
-		const int fontSize = 20;
-		DrawText(text, screenWidth / 2 - MeasureText(text, fontSize) / 2, screenHeight / 2 - fontSize / 2, fontSize, RAYWHITE);
+
+		break;
+	case GAME_OVER:
+		text = "GAME OVER";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, screenHeight / 2 - defaultFontSize / 2, defaultFontSize, RAYWHITE);
+
+		text = "Press left or right to return to the menu";
+		DrawText(text, screenWidth / 2 - MeasureText(text, defaultFontSize) / 2, 500, defaultFontSize, RAYWHITE);
+
+		break;
 	}
 }

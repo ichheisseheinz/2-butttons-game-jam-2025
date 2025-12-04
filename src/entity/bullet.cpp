@@ -24,15 +24,12 @@ bool bullet::Bullet::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 	for (int i = 0; i < numEnemies; i++)
 	{
 		enemy::Enemy& e = enemies[i];
-		if (e.active) // Separate to prevent unnessecarry calculation (I am professional programmer)
+		if (e.active && CheckCollisionCircles(this->position, 3, e.GetPosition(), (float)e.GetSize()))
 		{
-			if (CheckCollisionCircles(this->position, 3, e.GetPosition(), (float)e.GetSize()))
-			{
-				this->active = false;
-				e.active = false;
-				sounds::Play("assets/explosion.ogg");
-				return true;
-			}
+			this->active = false;
+			e.active = false;
+			file::Play("assets/explosion.ogg");
+			return true;
 		}
 	}
 

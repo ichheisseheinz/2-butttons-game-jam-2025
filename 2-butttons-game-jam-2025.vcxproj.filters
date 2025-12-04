@@ -39,7 +39,7 @@
     <ClCompile Include="src\entity\player.cpp">
       <Filter>Source Files\entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\file\sounds.cpp">
+    <ClCompile Include="src\file\file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="src\entity\player.h">
       <Filter>Header Files\entity</Filter>
     </ClInclude>
-    <ClInclude Include="src\file\sounds.h">
+    <ClInclude Include="src\file\file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

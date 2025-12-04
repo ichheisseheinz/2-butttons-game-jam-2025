@@ -12,9 +12,22 @@ namespace game
 	constexpr int maxEnemies = 30;
 	static int currentEnemies = 10;
 
+	constexpr int defaultFontSize = 20;
+
+	enum State
+	{
+		MENU,
+		CONTROLS,
+		GAME,
+		GAME_OVER
+	};
+
 	class Game
 	{
 	private:
+		State gameState;
+
+		// Game state members
 		player::Player player;
 
 		util::Timer shootCooldown;
@@ -24,8 +37,13 @@ namespace game
 		util::Timer spawnCooldown;
 		enemy::Enemy enemies[maxEnemies];
 		void Spawn();
+
+		// Menu members
+		int currentButton = 0;
 	public:
 		Game();
+
+		bool shouldClose = false;
 
 		void Update(float dt);
 		void Draw();

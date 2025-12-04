@@ -6,6 +6,8 @@ namespace util
 {
 	bool GetRightDown();
 	bool GetLeftDown();
+	bool GetRightPressed();
+	bool GetLeftPressed();
 
 	struct Timer
 	{

@@ -136,7 +136,7 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\entity\player.cpp" />
-    <ClCompile Include="src\file\sounds.cpp" />
+    <ClCompile Include="src\file\file.cpp" />
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +147,7 @@
     <ClInclude Include="src\entity\enemy.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\entity\player.h" />
-    <ClInclude Include="src\file\sounds.h" />
+    <ClInclude Include="src\file\file.h" />
     <ClInclude Include="src\util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

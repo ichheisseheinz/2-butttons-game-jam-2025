@@ -3,7 +3,7 @@
 using namespace player;
 
 Player::Player(Vector2 position, float rotation, int speed)
-	: position(position), velocity(0), speed(speed), accelerationSpeed(15), rotation(rotation), health(2) { }
+	: position(position), velocity(0), speed(speed), accelerationSpeed(15), rotation(rotation), health(1), tex(file::GetTexture("assets/player.png")) { }
 
 void Player::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 {
@@ -40,13 +40,10 @@ void Player::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 	this->rotation = this->velocity - 90;
 
 	// Check for any damage
-	if (!this->damageCooldown.IsActiveTimer())
+	if (!this->damageCooldown.IsActiveTimer() && IsTakingDamage(enemies, numEnemies))
 	{
-		if (IsTakingDamage(enemies, numEnemies))
-		{
-			sounds::Play("assets/hit.ogg");
-			health--;
-		}
+		file::Play("assets/hit.ogg");
+		this->health--;
 	}
 }
 
@@ -54,14 +51,10 @@ bool Player::IsTakingDamage(enemy::Enemy enemies[], int numEnemies)
 {
 	for (int i = 0; i < numEnemies; i++)
 	{
-		enemy::Enemy& e = enemies[i];
-		if (e.active)
+		if (enemies[i].active && CheckCollisionCircles(this->position, 15, enemies[i].GetPosition(), (float)enemies[i].GetSize() - 5))
 		{
-			if (CheckCollisionCircles(this->position, 15, e.GetPosition(), (float)e.GetSize() - 5))
-			{
-				this->damageCooldown.Start(1.5f);
-				return true;
-			}
+			this->damageCooldown.Start(1.5f);
+			return true;
 		}
 	}
 
@@ -71,6 +64,7 @@ bool Player::IsTakingDamage(enemy::Enemy enemies[], int numEnemies)
 void Player::Draw()
 {
 	DrawPolyLines(this->position, 3, 20, this->rotation, Fade(WHITE, this->damageCooldown.IsActiveTimer() ? 0.5f : 1.0f));
+	//DrawTextureV(this->tex, this->position, WHITE); test for proper loading, will replace
 }
 
 float Player::GetXPosition()

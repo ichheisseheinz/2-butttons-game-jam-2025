@@ -18,7 +18,7 @@ int main()
 
 	game::Game game;
 
-	while (!WindowShouldClose())
+	while (!WindowShouldClose() && !game.shouldClose)
 	{
 		float dt = GetFrameTime();
 		game.Update(dt);
@@ -33,7 +33,8 @@ int main()
 		EndDrawing();
 	}
 
-	sounds::UnloadSounds();
+	file::UnloadSounds();
+	file::UnloadTextures();
 
 	CloseAudioDevice();
 	CloseWindow();
