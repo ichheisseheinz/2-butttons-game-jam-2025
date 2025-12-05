@@ -11,7 +11,7 @@ bullet::Bullet::Bullet()
 bullet::Bullet::Bullet(Vector2 position, float rotation, int speed)
 	: position(position), rotation(rotation), speed(speed), velocity(Vector2Rotate(Vector2{ 1, 0 }, rotation * DEG2RAD)), active(true) { }
 
-bool bullet::Bullet::Update(float dt, enemy::Enemy enemies[], int numEnemies)
+void bullet::Bullet::Update(float dt)
 {
 	velocity = Vector2Scale(Vector2Normalize(velocity), speed * dt);
 	position = Vector2Add(position, velocity);
@@ -20,7 +20,10 @@ bool bullet::Bullet::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 	{
 		this->active = false;
 	}
+}
 
+bool bullet::Bullet::CheckCollisions(enemy::Enemy enemies[], int numEnemies)
+{
 	for (int i = 0; i < numEnemies; i++)
 	{
 		enemy::Enemy& e = enemies[i];

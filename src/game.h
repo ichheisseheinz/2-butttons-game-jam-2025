@@ -29,6 +29,7 @@ namespace game
 
 		// Game state members
 		player::Player player;
+		int score = 0;
 
 		util::Timer shootCooldown;
 		bullet::Bullet bullets[maxBullets];

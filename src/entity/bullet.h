@@ -19,7 +19,8 @@ namespace bullet
 
 		bool active;
 
-		bool Update(float dt, enemy::Enemy enemies[], int numEnemies);
+		void Update(float dt);
 		void Draw();
+		bool CheckCollisions(enemy::Enemy enemies[], int numEnemies);
 	};
 }

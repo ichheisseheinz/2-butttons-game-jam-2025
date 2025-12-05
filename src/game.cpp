@@ -12,6 +12,7 @@ void Game::Update(float dt)
 	case MENU:
 		if (util::GetRightPressed())
 		{
+			file::Play("assets/menuselect.ogg");
 			this->currentButton++;
 		}
 		this->currentButton %= 3;
@@ -30,12 +31,15 @@ void Game::Update(float dt)
 				this->shouldClose = true;
 				break;
 			}
+
+			file::Play("assets/menuselect.ogg");
 		}
 
 		break;
 	case CONTROLS:
 		if (util::GetRightPressed() || util::GetLeftPressed())
 		{
+			file::Play("assets/menuselect.ogg");
 			this->gameState = MENU;
 		}
 
@@ -69,16 +73,26 @@ void Game::Update(float dt)
 			{
 				if (this->bullets[i].active)
 				{
-					if (this->bullets[i].Update(dt, this->enemies, currentEnemies)) currentEnemies++;
+					this->bullets[i].Update(dt);
+					if (this->bullets[i].CheckCollisions(this->enemies, currentEnemies))
+					{
+						this->score += 10;
+						currentEnemies++;
+					}
 				}
 			}
 		}
-		else this->gameState = GAME_OVER;
+		else
+		{
+			this->score = 0;
+			this->gameState = GAME_OVER;
+		}
 
 		break;
 	case GAME_OVER:
 		if (util::GetRightPressed() || util::GetLeftPressed())
 		{
+			file::Play("assets/menuselect.ogg");
 			this->gameState = MENU;
 		}
 
@@ -140,7 +154,7 @@ void Game::Draw()
 		text = "Use right key to change options and left to select";
 		DrawText(text, screenWidth / 2 - MeasureText(text, 16) / 2, 710, 16, GRAY);
 
-		text = "All sound effects from kenney.nl (tsym!!!)";
+		text = "All sound effects from kenney.nl";
 		DrawText(text, screenWidth / 2 - MeasureText(text, 16) / 2, 740, 16, GRAY);
 
 		text = "Created by IchHeisseHeinz for 2 Buttons Game Jam 2025";
@@ -185,8 +199,11 @@ void Game::Draw()
 			}
 		}
 
-		// Draw player health
-		DrawText(TextFormat("Health: %d", this->player.GetHealth()), 10, 10, 20, RAYWHITE);
+		// Draw UI
+		DrawText(TextFormat("Health: %d", this->player.GetHealth()), 10, 10, defaultFontSize, RAYWHITE);
+
+		text = TextFormat("Score %d", this->score);
+		DrawText(text, screenWidth - MeasureText(text, defaultFontSize) - 10, 10, defaultFontSize, RAYWHITE);
 
 		break;
 	case GAME_OVER:
