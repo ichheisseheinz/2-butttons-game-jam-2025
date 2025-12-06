@@ -4,13 +4,24 @@
 using namespace enemy;
 
 Enemy::Enemy()
-	: position(Vector2{ 0, -20 }), horizontalCenter(0), rotation(90), speed(0), size(0), active(false) { }
+	: position(Vector2{ 0, -20 }),
+	horizontalCenter(0),
+	rotation(90),
+	speed(0),
+	size(0),
+	active(false),
+	tex(file::GetTexture("assets/enemy.png"))
+{ }
 
 Enemy::Enemy(Vector2 position, float rotation, int speed)
-	: position(Vector2{ position.x, -20 }), horizontalCenter(position.x), rotation(rotation), speed(speed), size(10), active(true)
-{
-	this->timeSinceActive.Start();
-}
+	: position(Vector2{ position.x, -20 }),
+	horizontalCenter(position.x),
+	rotation(rotation),
+	speed(speed),
+	size(10),
+	active(true),
+	tex(file::GetTexture("assets/enemy.png"))
+{ this->timeSinceActive.Start(); }
 
 void Enemy::Update(float dt)
 {
@@ -31,7 +42,10 @@ void Enemy::Update(float dt)
 
 void Enemy::Draw()
 {
-	DrawPolyLines(this->position, 3, this->size, this->rotation, RED);
+	int currentFrame = (int)(this->timeSinceActive.GetElapsedTime() * 4) % 2;
+	Rectangle sourceRect = Rectangle{ 16.0f * currentFrame, 0, 16, 16 };
+	Rectangle destRect = Rectangle{ this->position.x, this->position.y, 32, 32 };
+	DrawTexturePro(this->tex, sourceRect, destRect, Vector2{destRect.width / 2, destRect.height / 2}, this->rotation + 90, WHITE);
 }
 
 Vector2 Enemy::GetPosition()

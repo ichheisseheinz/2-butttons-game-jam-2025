@@ -3,7 +3,8 @@
 using namespace game;
 
 Game::Game()
-	: player(Vector2{ screenWidth / 2, (float)screenHeight - 100}, -90, 50), gameState(MENU) { }
+	: gameState(MENU)
+{ }
 
 void Game::Update(float dt)
 {
@@ -22,6 +23,9 @@ void Game::Update(float dt)
 			switch (this->currentButton)
 			{
 			case 0:
+				this->player = player::Player(Vector2{ screenWidth / 2, (float)screenHeight - 100 }, -90, 50);
+				this->player.GetFrameTimer().Start();
+				ResetEnemies();
 				this->gameState = GAME;
 				break;
 			case 1:
@@ -127,6 +131,17 @@ void Game::Spawn()
 	}
 }
 
+void Game::ResetEnemies()
+{
+	for (int i = 0; i < maxEnemies; i++)
+	{
+		if (this->enemies[i].active)
+		{
+			this->enemies[i] = enemy::Enemy();
+		}
+	}
+}
+
 void Game::Draw()
 {
 	const char* text;
@@ -179,9 +194,7 @@ void Game::Draw()
 
 		break;
 	case GAME:
-		this->player.Draw();
-
-		// Draw Enemies
+		// Draw enemies
 		for (int i = 0; i < maxEnemies; i++)
 		{
 			if (this->enemies[i].active)
@@ -198,6 +211,9 @@ void Game::Draw()
 				this->bullets[i].Draw();
 			}
 		}
+
+		// Draw player
+		this->player.Draw();
 
 		// Draw UI
 		DrawText(TextFormat("Health: %d", this->player.GetHealth()), 10, 10, defaultFontSize, RAYWHITE);

@@ -15,7 +15,8 @@ namespace enemy
 		int speed;
 		int size;
 
-		util::Stopwatch timeSinceActive;
+		Texture tex;
+		util::Stopwatch timeSinceActive; // Used for movement and animation
 	public:
 		Enemy();
 		Enemy(Vector2 position, float rotation, int speed);

@@ -13,6 +13,8 @@ namespace bullet
 		float rotation;
 		int speed;
 		Vector2 velocity;
+
+		Texture tex;
 	public:
 		Bullet();
 		Bullet(Vector2 position, float rotation, int speed);

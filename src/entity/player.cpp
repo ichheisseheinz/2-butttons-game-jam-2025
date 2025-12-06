@@ -2,8 +2,25 @@
 
 using namespace player;
 
+Player::Player()
+	: position(Vector2{0,0}),
+	velocity(0),
+	speed(0),
+	accelerationSpeed(15),
+	rotation(0),
+	health(100),
+	tex(file::GetTexture("assets/player.png"))
+{ }
+
 Player::Player(Vector2 position, float rotation, int speed)
-	: position(position), velocity(0), speed(speed), accelerationSpeed(15), rotation(rotation), health(1), tex(file::GetTexture("assets/player.png")) { }
+	: position(position),
+	velocity(0),
+	speed(speed),
+	accelerationSpeed(15),
+	rotation(rotation),
+	health(1),
+	tex(file::GetTexture("assets/player.png"))
+{ }
 
 void Player::Update(float dt, enemy::Enemy enemies[], int numEnemies)
 {
@@ -63,8 +80,11 @@ bool Player::IsTakingDamage(enemy::Enemy enemies[], int numEnemies)
 
 void Player::Draw()
 {
-	DrawPolyLines(this->position, 3, 20, this->rotation, Fade(WHITE, this->damageCooldown.IsActiveTimer() ? 0.5f : 1.0f));
-	//DrawTextureV(this->tex, this->position, WHITE); test for proper loading, will replace
+	int currentFrame = (int)(this->frameTimer.GetElapsedTime() * 4) % 4;
+	Rectangle sourceRect = Rectangle{ 16.0f * currentFrame, 0, 16, 16 };
+	Rectangle destRect = Rectangle{ this->position.x, this->position.y, 64, 64 };
+	DrawTexturePro(this->tex, sourceRect, destRect, Vector2{destRect.width / 2, destRect.height / 2}, this->rotation + 90, WHITE);
+	//DrawCircleLinesV(this->position, 15, RED); // debug
 }
 
 float Player::GetXPosition()
@@ -80,4 +100,9 @@ float Player::GetRotation()
 int Player::GetHealth()
 {
 	return this->health;
+}
+
+util::Stopwatch Player::GetFrameTimer()
+{
+	return this->frameTimer;
 }

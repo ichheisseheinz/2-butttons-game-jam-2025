@@ -21,7 +21,9 @@ namespace player
 		bool IsTakingDamage(enemy::Enemy enemies[], int numEnemies);
 
 		Texture tex;
+		util::Stopwatch frameTimer;
 	public:
+		Player();
 		Player(Vector2 position, float rotation, int speed);
 
 		void Update(float dt, enemy::Enemy enemies[], int numEnemies);
@@ -30,5 +32,6 @@ namespace player
 		float GetXPosition();
 		float GetRotation();
 		int GetHealth();
+		util::Stopwatch GetFrameTimer();
 	};
 }

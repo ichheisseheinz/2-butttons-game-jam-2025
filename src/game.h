@@ -26,6 +26,7 @@ namespace game
 	{
 	private:
 		State gameState;
+		Texture background;
 
 		// Game state members
 		player::Player player;
@@ -38,6 +39,8 @@ namespace game
 		util::Timer spawnCooldown;
 		enemy::Enemy enemies[maxEnemies];
 		void Spawn();
+
+		void ResetEnemies();
 
 		// Menu members
 		int currentButton = 0;
